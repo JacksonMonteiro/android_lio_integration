@@ -1,19 +1,12 @@
-package com.example.liointegration.activities;
-
-import android.os.Bundle;
+package com.example.liointegration.views.activities;
 
 import androidx.annotation.NonNull;
 
 import com.example.liointegration.R;
-import com.example.liointegration.activities.views.MainView;
+import com.example.liointegration.views.activities.view.MainView;
 import com.example.liointegration.presenters.activities.MainPresenter;
 
 public class MainActivity extends BaseActivity<MainView, MainPresenter> implements MainView {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
 
     @Override
     public void initView() {}
@@ -26,7 +19,7 @@ public class MainActivity extends BaseActivity<MainView, MainPresenter> implemen
     @NonNull
     @Override
     public MainPresenter createPresenter() {
-        return null;
+        return new MainPresenter();
     }
 
     @Override

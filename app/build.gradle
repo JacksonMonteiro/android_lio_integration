@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 28
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.example.liointegration"
@@ -48,6 +48,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // External Libraries
-    implementation 'com.cielo.lio:order-manager:1.4.0'
+    implementation "com.cielo.lio:order-manager:${cieloLioVersion}"
     implementation "com.hannesdorfmann.mosby3:mvp:${mosbyVersion}"
 }

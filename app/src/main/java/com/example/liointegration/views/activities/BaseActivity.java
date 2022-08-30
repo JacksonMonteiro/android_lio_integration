@@ -1,9 +1,10 @@
-package com.example.liointegration.activities;
+package com.example.liointegration.views.activities;
 
 import android.os.Bundle;
 import android.view.WindowManager;
 
 import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
@@ -13,6 +14,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(getLayout());
         initView();
         initActions();

@@ -1,4 +1,4 @@
-package com.example.liointegration.activities.views;
+package com.example.liointegration.views.activities.view;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
