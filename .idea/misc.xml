@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/GFX2/AndroidStudioProjects/lioIntegration/app/src/main/res/layout/activity_main.xml" value="0.1953125" />
-        <entry key="..\:/Users/GFX2/Desktop/android/java_cieloLio_integration/app/src/main/res/layout/activity_main.xml" value="0.209375" />
+        <entry key="..\:/Users/GFX2/Desktop/android/java_cieloLio_integration/app/src/main/res/layout/activity_create_order.xml" value="0.25" />
+        <entry key="..\:/Users/GFX2/Desktop/android/java_cieloLio_integration/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/GFX2/Desktop/android/java_cieloLio_integration/app/src/main/res/layout/main_content.xml" value="0.20833333333333334" />
       </map>
     </option>
   </component>

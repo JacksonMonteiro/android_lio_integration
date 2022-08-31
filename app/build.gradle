@@ -21,6 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    applicationVariants.all { variant ->
+        buildConfigField "String", "CLIENT_ID", "\"loIDeZOSihHEaDmutRHUPl3dxJzKIQTgHJ5yncMHqLUNf241vz\""
+        buildConfigField "String", "TOKEN", "\"ZjpVpQiUNcO4BLUsnSmwqFCL8AExTqTEZ9kl9vm9lDAdnd3MOy\""
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -29,10 +35,10 @@ android {
     viewBinding {
         enabled = true
     }
+
 }
 
 def cieloLioVersion = '1.4.0'
-def mosbyVersion = '3.1.1'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -49,5 +55,4 @@ dependencies {
 
     // External Libraries
     implementation "com.cielo.lio:order-manager:${cieloLioVersion}"
-    implementation "com.hannesdorfmann.mosby3:mvp:${mosbyVersion}"
 }

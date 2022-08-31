@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cielo LIO Integration</string>
+    <string name="create_order_button_text">Create Order</string>
 </resources>
