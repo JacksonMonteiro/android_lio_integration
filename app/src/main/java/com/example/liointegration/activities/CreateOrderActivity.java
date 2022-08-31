@@ -10,16 +10,20 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.liointegration.BuildConfig;
+import com.example.liointegration.R;
 import com.example.liointegration.databinding.ActivityCreateOrderBinding;
 
 import java.util.Objects;
 import java.util.UUID;
 
+import cielo.orders.domain.CancellationRequest;
 import cielo.orders.domain.CheckoutRequest;
 import cielo.orders.domain.Credentials;
 import cielo.orders.domain.Order;
+import cielo.orders.domain.ResultOrders;
 import cielo.sdk.order.OrderManager;
 import cielo.sdk.order.ServiceBindListener;
+import cielo.sdk.order.cancellation.CancellationListener;
 import cielo.sdk.order.payment.PaymentCode;
 import cielo.sdk.order.payment.PaymentError;
 import cielo.sdk.order.payment.PaymentListener;
@@ -30,6 +34,7 @@ public class CreateOrderActivity extends AppCompatActivity {
     private OrderManager orderManager;
     private Order order;
     private PaymentListener paymentListener;
+    private CancellationListener cancellationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +55,49 @@ public class CreateOrderActivity extends AppCompatActivity {
             public void onPayment(@NonNull Order order) {
                 order.markAsPaid();
                 updateOrder(order);
-                Log.d("ONPAYMENT", "VENDA REALIZADA COM SUCESSO");
+
+                ResultOrders resultOrders = orderManager.retrieveOrders(10, 0);
+
+                String result = "Produto: " + resultOrders.getResults().get(0).getItems().get(0).getName() + "\n Preço: R$ " + resultOrders.getResults().get(0).getItems().get(0).getUnitPrice() + "\n Quantidade: " + resultOrders.getResults().get(0).getItems().get(0).getQuantity();
+                binding.result.setText(result);
+
+
+                binding.callbackMessage.setText("Venda realizada com sucesso");
+                binding.cancelOrderButton.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onCancel() {
-
+                binding.callbackMessage.setText("Venda cancelada");
+                binding.cancelOrderButton.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(@NonNull PaymentError paymentError) {
+                binding.callbackMessage.setText("Erro ao finalizar venda");
+                binding.cancelOrderButton.setVisibility(View.GONE);
+            }
+        };
+        cancellationListener = new CancellationListener() {
+            @Override
+            public void onSuccess(@NonNull Order order) {
+                binding.cancelOrderButton.setVisibility(View.GONE);
+                binding.callbackMessage.setText("Pedido cancelado com sucesso");
+                binding.result.setText("");
+            }
 
+            @Override
+            public void onCancel() {
+                binding.callbackMessage.setText("Operação de cancelamento de pedido, cancelada");
+            }
+
+            @Override
+            public void onError(@NonNull PaymentError paymentError) {
+                binding.callbackMessage.setText("Erro ao cancelar pedido");
             }
         };
 
+        // Submit Payment Button
         binding.submitOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +109,14 @@ public class CreateOrderActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        // Cancel Order Button
+        binding.cancelOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelOrder(cancellationListener);
             }
         });
     }
@@ -136,5 +178,22 @@ public class CreateOrderActivity extends AppCompatActivity {
     private void updateOrder(Order order) {
         this.order = order;
         orderManager.updateOrder(this.order);
+    }
+
+    private void cancelOrder(CancellationListener cancellationListener) {
+        CancellationRequest request = new CancellationRequest.Builder()
+                .orderId(order.getId())
+                .authCode(order.getPayments().get(0).getAuthCode())
+                .cieloCode(order.getPayments().get(0).getCieloCode())
+                .value(order.getPayments().get(0).getAmount())
+                .build();
+
+        orderManager.cancelOrder(request, cancellationListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        orderManager.unbind();
+        super.onBackPressed();
     }
 }
